@@ -1,2 +1,1 @@
-export const INCREASE = 'increase';
-export const DECREASE = 'decrease';
+export const CALCULATE_TOTAL = 'CALCULATE_TOTAL';

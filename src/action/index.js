@@ -1,15 +1,8 @@
-import { INCREASE, DECREASE } from './types';
+import { CALCULATE_TOTAL } from './types';
 
-export const increase = () => {
+export const calculateTotal = total => {
   return {
-    type: INCREASE,
-    payload: 1
-  };
-};
-
-export const decrease = () => {
-  return {
-    type: DECREASE,
-    payload: -1
+    type: CALCULATE_TOTAL,
+    payload: total
   };
 };

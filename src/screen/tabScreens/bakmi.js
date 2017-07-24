@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
-import { View, FlatList, Alert } from 'react-native';
+import { View, FlatList } from 'react-native';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import MenuComponent from '../../components/menuComponent';
+import { calculateTotal } from '../../action';
 
 const bakmiLebar = require('../../images/bakmi/bakmi_lebar.png');
 const bakmiHijau = require('../../images/bakmi/bakmi_hijau.png');
@@ -32,80 +35,131 @@ const data = [
   {
     imageURI: bakmiHijau,
     title: 'Bakmi Hijau Ayam Pangsit/baso',
-    price: '25.000',
+    price: '32.000',
     id: 3
   },
   {
     imageURI: bihun,
-    title: 'Bakmi Lebar Ayam',
+    title: 'Bihun Ayam',
     price: '25.000',
     id: 4
   },
   {
     imageURI: bihun,
-    title: 'Bakmi Lebar Ayam',
-    price: '25.000',
+    title: 'Bihun Ayam Pangsit/baso',
+    price: '30.000',
     id: 5
   },
   {
     imageURI: kwetiau,
-    title: 'Bakmi Lebar Ayam',
+    title: 'Kwetiau Ayam',
     price: '25.000',
     id: 6
   },
   {
     imageURI: kwetiau,
-    title: 'Bakmi Lebar Ayam',
-    price: '25.000',
+    title: 'Kwetiau Ayam Pangsit/baso',
+    price: '30.000',
     id: 7
   },
   {
     imageURI: locupan,
-    title: 'Bakmi Lebar Ayam',
+    title: 'Locupan Ayam',
     price: '25.000',
     id: 8
   },
   {
     imageURI: locupan,
-    title: 'Bakmi Lebar Ayam',
-    price: '25.000',
+    title: 'Locupan Ayam Pangist/baso',
+    price: '30.000',
     id: 9
   },
   {
     imageURI: nasiTim,
-    title: 'Bakmi Lebar Ayam',
-    price: '25.000',
+    title: 'Nasi Tim Ayam',
+    price: '27.000',
     id: 10
   },
   {
     imageURI: nasiTim,
-    title: 'Bakmi Lebar Ayam',
-    price: '25.000',
+    title: 'Nasi Tim Ayam Pangist/baso',
+    price: '32.000',
     id: 11
   },
   {
     imageURI: mieKangkung,
-    title: 'Bakmi Lebar Ayam',
-    price: '25.000',
+    title: 'Mie Kangkung ',
+    price: '28.000',
     id: 12
-  },
-  {
-    imageURI: mieKangkung,
-    title: 'Bakmi Lebar Ayam',
-    price: '25.000',
-    id: 13
   }
 ];
 
-export default class bakmi extends Component {
-  whichItem = item => {
-    return Alert.alert('Alert Title', item.toString(), [
-      {
-        text: 'Ask me later',
-        onPress: () => console.log('Ask me later pressed')
-      }
-    ]);
+let total = 0;
+let itemPriceConverted = 0;
+let priceString = '';
+const INCREASE = 'increase';
+const DECREASE = 'decrease';
+
+class bakmi extends Component {
+  static propTypes = {
+    dispatch: PropTypes.object
   };
+
+  state = {
+    id: 0,
+    operation: ''
+  };
+
+  findQuantity = id => {
+    return this.setState({ id });
+  };
+
+  findOperation = decrease => {
+    return this.setState({ operation: decrease });
+  };
+
+  calculateTotal = (operation, price) => {
+    // The shortcut
+    // const x = operation === INCREASE ? (total += price) : (total -= price);
+    // const y = x < 10 ? (total = 0) : total;
+
+    if (operation === INCREASE) {
+      total += price;
+    }
+
+    if (operation === DECREASE) {
+      total -= itemPriceConverted;
+    }
+
+    // Don't let the price go below 0
+    if (total < 0) {
+      total = 0;
+    }
+    // convert int to string because we need the .000
+
+    if (total === 0) {
+      priceString = `${total}`;
+    } else {
+      priceString = `${total}.000`;
+    }
+
+    this.props.dispatch(calculateTotal(priceString));
+  };
+
+  componentDidUpdate() {
+    // get the ID of the item
+    const { id, operation } = this.state;
+
+    // get the current item price
+    const currentItemPrice = data[id].price;
+
+    // convert currentPrice to integer
+    itemPriceConverted = parseFloat(currentItemPrice);
+
+    // call the function
+    this.calculateTotal(operation, itemPriceConverted);
+  }
+
   render() {
     return (
       <View>
@@ -117,10 +171,17 @@ export default class bakmi extends Component {
               imageURI={item.imageURI}
               title={item.title}
               price={item.price}
-              onPress={() => this.whichItem(item.id)}
+              calculateTotal={() => this.findQuantity(item.id)}
+              findOperation={this.findOperation}
             />}
         />
       </View>
     );
   }
 }
+
+bakmi.propTypes = {
+  dispatch: PropTypes.func
+};
+
+export default connect()(bakmi);

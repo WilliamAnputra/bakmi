@@ -1,42 +1,53 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { Text, View, TouchableHighlight } from 'react-native';
+import { Text, View, TouchableOpacity } from 'react-native';
 
 export default class ImportButton extends Component {
+  static propTypes = {
+    findQuantity: PropTypes.func,
+    findOperation: PropTypes.func
+  };
   state = {
     quantity: 0
   };
-  renderTotal = decrease => {
-    if (decrease === 'decrease' && this.state.quantity > 0) {
+  renderTotal = operation => {
+    this.props.findQuantity();
+    this.props.findOperation(operation);
+    if (operation === 'decrease' && this.state.quantity > 0) {
       return this.setState({ quantity: this.state.quantity - 1 });
     }
-    if (this.state.quantity === 0 && decrease === 'decrease') {
-      return 0;
+    if (this.state.quantity === 0 && operation === 'decrease') {
+      return this.setState({ quantity: 0 });
     }
-    return this.setState({ quantity: this.state.quantity + 1 });
+
+    if (operation === 'increase' && !this.state.quantity >= 0) {
+      return this.setState({ quantity: this.state.quantity + 1 });
+    }
+    return null;
   };
+
   render() {
     return (
       <View style={{ alignItems: 'flex-end', marginRight: 10 }}>
         <View style={{ flexDirection: 'row' }}>
-          <TouchableHighlight
+          <TouchableOpacity
             style={styles.operatorSignContaier}
-            onPress={this.props.onPress}>
+            disabled={this.state.quantity === 0 ? true : false}
+            onPress={() => this.renderTotal('decrease')}>
             <Text style={styles.operatorSign}> - </Text>
-          </TouchableHighlight>
+          </TouchableOpacity>
 
-          <TouchableHighlight style={styles.totalContainer}>
+          <TouchableOpacity style={styles.totalContainer}>
             <Text style={styles.totalText}>
               {this.state.quantity}
             </Text>
-          </TouchableHighlight>
+          </TouchableOpacity>
 
-          <TouchableHighlight
+          <TouchableOpacity
             style={styles.operatorSignContaier}
-            onPress={() => this.renderTotal()}>
-            <Text style={styles.operatorSign}> +</Text>
-          </TouchableHighlight>
+            onPress={() => this.renderTotal('increase')}>
+            <Text style={styles.operatorSign}> + </Text>
+          </TouchableOpacity>
         </View>
       </View>
     );
@@ -46,7 +57,8 @@ export default class ImportButton extends Component {
 ImportButton.PropTypes = {
   price: PropTypes.number,
   title: PropTypes.string,
-  index: PropTypes.number
+  index: PropTypes.number,
+  quantity: PropTypes.number
 };
 
 const styles = {

@@ -1,23 +1,32 @@
 import React, { Component } from 'react';
 import { Text, View, Dimensions } from 'react-native';
+import { connect } from 'react-redux';
+
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const { width } = Dimensions.get('window');
 
-export default class totalButton extends Component {
+class totalBox extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.text}>TOTAL PESANAN: </Text>
-        <Icon name="ios-paper-outline" size={32} onPress={this.props.onPress} />
+        <Text style={styles.text}>
+          TOTAL PESANAN: Rp. {this.props.totalPrice}
+        </Text>
+        <Icon
+          name="ios-paper-outline"
+          size={32}
+          onPress={() => this.props.onPress.navigate('checkout')}
+        />
       </View>
     );
   }
 }
 
-totalButton.propTypes = {
-  onPress: PropTypes.func
+totalBox.propTypes = {
+  onPress: PropTypes.object,
+  totalPrice: PropTypes.string
 };
 
 const styles = {
@@ -38,3 +47,11 @@ const styles = {
     color: '#bc2c39'
   }
 };
+
+const mapStateToProps = state => {
+  return {
+    totalPrice: state.cartTotal.total
+  };
+};
+
+export default connect(mapStateToProps)(totalBox);

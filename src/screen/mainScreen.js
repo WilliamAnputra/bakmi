@@ -1,15 +1,16 @@
 import React from 'react';
 import { View, BackHandler, Dimensions } from 'react-native';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { TabNavigator } from 'react-navigation';
 import Icon from 'react-native-vector-icons/Ionicons';
 import bakmi from './tabScreens/bakmi';
 import cemilan from './tabScreens/cemilan';
 import minuman from './tabScreens/minuman';
-import TotalButton from '../components/totalBox';
+import TotalBox from '../components/totalBox';
 
 const { width, height } = Dimensions.get('window');
-export default class mainScreen extends React.Component {
+class mainScreen extends React.Component {
   static navigationOptions = {
     title: 'Bakmie Pak Cam Kee',
     headerStyle: { backgroundColor: '#bc2c39' },
@@ -40,8 +41,8 @@ export default class mainScreen extends React.Component {
         Minuman: { screen: minuman }
       },
       {
+        lazy: true,
         tabBarPosition: 'top',
-
         tabBarOptions: {
           style: { backgroundColor: '#d8d8d8' },
           activeBackgroundColor: '#d8d8d8',
@@ -55,9 +56,7 @@ export default class mainScreen extends React.Component {
     return (
       <View style={styles.header}>
         <Tabs />
-        <TotalButton
-          onPress={() => this.props.navigation.navigate('checkout')}
-        />
+        <TotalBox onPress={this.props.navigation} />
       </View>
     );
   }
@@ -73,3 +72,5 @@ const styles = {
     height
   }
 };
+
+export default connect()(mainScreen);

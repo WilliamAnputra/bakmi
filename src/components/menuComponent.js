@@ -8,12 +8,11 @@ const { width } = Dimensions.get('window');
 // const priceArray = [];
 // const titleArray = [];
 // const indexArray = [];
-let itemPriceConverted = 0;
+// let itemPriceConverted = 0;
 
 export default class BakmiComponent extends Component {
   componentWillMount = () => {
-    itemPriceConverted = parseInt(this.props.price.replace('.', ''), 10);
-
+    // itemPriceConverted = parseInt(this.props.price.replace('.', ''), 10);
     // priceArray.push(itemPriceConverted);
     // titleArray.push(this.props.title);
     // indexArray.push(this.props.index);
@@ -30,8 +29,9 @@ export default class BakmiComponent extends Component {
             </Text>
 
             <OrderButton
-              priceArray={itemPriceConverted}
               onPress={this.props.onPress}
+              findQuantity={this.props.calculateTotal}
+              findOperation={this.props.findOperation}
             />
 
             <Text style={styles.priceTag}>
@@ -56,7 +56,9 @@ BakmiComponent.propTypes = {
   imageURI: PropTypes.number,
   title: PropTypes.string,
   price: PropTypes.string,
-  index: PropTypes.number
+  onPress: PropTypes.func,
+  calculateTotal: PropTypes.func,
+  findOperation: PropTypes.func
 };
 
 const styles = {
