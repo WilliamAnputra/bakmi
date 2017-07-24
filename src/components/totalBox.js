@@ -52,7 +52,7 @@ const styles = {
 const mapStateToProps = state => {
   const { total } = state.cartTotal;
   return {
-    totalPrice: total.
+    totalPrice: total
   };
 };
 

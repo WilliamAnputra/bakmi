@@ -21,6 +21,6 @@ export const calculateTotalValue = (operation, price) => {
 
   return {
     type: CALCULATE_TOTAL,
-    payload: { total, a: 20 }
+    payload: total
   };
 };
