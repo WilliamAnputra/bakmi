@@ -98,7 +98,7 @@ class cemilan extends Component {
     const currentItemPrice = data[id].price;
 
     // convert currentPrice to integer
-    itemPriceConverted = parseInt(currentItemPrice.replace('.', ''), 10);
+    itemPriceConverted = parseFloat(currentItemPrice);
 
     // call the function
     this.calculateTotal(operation, itemPriceConverted);

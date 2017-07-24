@@ -161,6 +161,7 @@ class bakmi extends Component {
   }
 
   render() {
+    console.log('bakmi', this.props.totalPrice);
     return (
       <View>
         <FlatList
