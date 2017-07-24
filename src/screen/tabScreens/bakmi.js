@@ -124,24 +124,23 @@ class bakmi extends Component {
     // const y = x < 10 ? (total = 0) : total;
 
     if (operation === INCREASE) {
-      console.log('price is', price);
-      this.props.totalPrice += price;
+      total += price;
     }
 
     if (operation === DECREASE) {
-      this.props.totalPrice -= itemPriceConverted;
+      total -= itemPriceConverted;
     }
 
     // Don't let the price go below 0
     if (this.props.totalPrice < 0) {
-      this.props.totalPrice = 0;
+      total = 0;
     }
     // convert int to string because we need the .000
 
     if (this.props.totalPrice === 0) {
-      priceString = `${this.props.totalPrice}`;
+      priceString = `${total}`;
     } else {
-      priceString = `${this.props.totalPrice}.000`;
+      priceString = `${total}.000`;
     }
 
     this.props.dispatch(calculateTotal(priceString));
@@ -162,8 +161,7 @@ class bakmi extends Component {
   }
 
   render() {
-    console.log('bakmi', this.props.totalPrice);
-    console.log(this.props.totalPrice);
+    console.log('bakmi', total);
 
     return (
       <View>

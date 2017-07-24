@@ -68,22 +68,22 @@ class cemilan extends Component {
     // const y = x < 10 ? (total = 0) : total;
 
     if (operation === INCREASE) {
-      this.props.totalPrice += price;
+      total += price;
     }
 
     if (operation === DECREASE) {
-      this.props.totalPrice -= itemPriceConverted;
+      total -= itemPriceConverted;
     }
 
     // Don't let the price go below 0
-    if (this.props.totalPrice < 0) {
-      this.props.totalPrice = 0;
+    if (total < 0) {
+      total = 0;
     }
 
-    if (this.props.totalPrice === 0) {
-      priceString = `${this.props.totalPrice}`;
+    if (total === 0) {
+      priceString = `${total}`;
     } else {
-      priceString = `${this.props.totalPrice}.000`;
+      priceString = `${total}.000`;
     }
 
     // convert back  int to string because we need the .000
@@ -104,6 +104,7 @@ class cemilan extends Component {
     this.calculateTotal(operation, itemPriceConverted);
   }
   render() {
+    console.log('cemilan', total);
     return (
       <View>
         <FlatList
