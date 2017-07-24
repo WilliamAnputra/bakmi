@@ -3,7 +3,7 @@ import { View, FlatList } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import MenuComponent from '../../components/menuComponent';
-import { calculateTotal } from '../../action';
+import { calculateTotalValue } from '../../action';
 
 const basoGoreng = require('../../images/cemilan/baso_goreng.png');
 const pangsit = require('../../images/cemilan/pangsit.png');
@@ -19,7 +19,7 @@ const data = [
   },
   {
     imageURI: pangsit,
-    title: 'Pasngsit isi 5',
+    title: 'Pangsit isi 5',
     price: '13.000',
     id: 1
   },
@@ -37,12 +37,7 @@ const data = [
   }
 ];
 
-let total = 0;
 let itemPriceConverted = 0;
-let priceString = '';
-
-const INCREASE = 'increase';
-const DECREASE = 'decrease';
 
 class cemilan extends Component {
   static propTypes = {
@@ -58,41 +53,12 @@ class cemilan extends Component {
     return this.setState({ id });
   };
 
-  findOperation = decrease => {
-    return this.setState({ operation: decrease });
+  findOperation = operation => {
+    return this.setState({ operation });
   };
 
-  calculateTotal = (operation, price) => {
-    // The shortcut
-    // const x = operation === INCREASE ? (total += price) : (total -= price);
-    // const y = x < 10 ? (total = 0) : total;
-
-    if (operation === INCREASE) {
-      total += price;
-    }
-
-    if (operation === DECREASE) {
-      total -= itemPriceConverted;
-    }
-
-    // Don't let the price go below 0
-    if (total < 0) {
-      total = 0;
-    }
-
-    if (total === 0) {
-      priceString = `${total}`;
-    } else {
-      priceString = `${total}.000`;
-    }
-
-    // convert back  int to string because we need the .000
-    this.props.dispatch(calculateTotal(priceString));
-  };
-
-  componentDidUpdate() {
-    // get the ID of the item
-    const { id, operation } = this.state;
+  componentWillUpdate(nextProps, nextState) {
+    const { id, operation } = nextState;
 
     // get the current item price
     const currentItemPrice = data[id].price;
@@ -100,11 +66,12 @@ class cemilan extends Component {
     // convert currentPrice to integer
     itemPriceConverted = parseFloat(currentItemPrice);
 
-    // call the function
-    this.calculateTotal(operation, itemPriceConverted);
+    this.props.dispatch(calculateTotalValue(operation, itemPriceConverted));
+
+    // // call the function
+    // this.calculateTotal(operation, itemPriceConverted);
   }
   render() {
-    console.log('cemilan', total);
     return (
       <View>
         <FlatList
@@ -125,14 +92,13 @@ class cemilan extends Component {
 }
 
 cemilan.propTypes = {
-  dispatch: PropTypes.func,
-  totalPrice: PropTypes.number
+  dispatch: PropTypes.func
 };
 
-const mapStateToProps = state => {
-  return {
-    totalPrice: state.cartTotal.total
-  };
-};
+// const mapStateToProps = state => {
+//   return {
+//     totalPrice: state.cartTotal.total
+//   };
+// };
 
-export default connect(mapStateToProps)(cemilan);
+export default connect()(cemilan);

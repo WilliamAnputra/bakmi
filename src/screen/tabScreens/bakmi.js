@@ -3,7 +3,7 @@ import { View, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import MenuComponent from '../../components/menuComponent';
-import { calculateTotal } from '../../action';
+import { calculateTotalValue } from '../../action';
 
 const bakmiLebar = require('../../images/bakmi/bakmi_lebar.png');
 const bakmiHijau = require('../../images/bakmi/bakmi_hijau.png');
@@ -12,6 +12,9 @@ const kwetiau = require('../../images/bakmi/kwetiau.png');
 const locupan = require('../../images/bakmi/locupan.png');
 const nasiTim = require('../../images/bakmi//nasi_tim.png');
 const mieKangkung = require('../../images/bakmi//mie_kangkung.png');
+
+const INCREASE = 'increase';
+const DECREASE = 'decrease';
 
 const data = [
   {
@@ -94,11 +97,7 @@ const data = [
   }
 ];
 
-let total = 0;
 let itemPriceConverted = 0;
-let priceString = '';
-const INCREASE = 'increase';
-const DECREASE = 'decrease';
 
 class bakmi extends Component {
   static propTypes = {
@@ -114,41 +113,12 @@ class bakmi extends Component {
     return this.setState({ id });
   };
 
-  findOperation = decrease => {
-    return this.setState({ operation: decrease });
+  findOperation = operation => {
+    return this.setState({ operation });
   };
 
-  calculateTotal = (operation, price) => {
-    // The shortcut
-    // const x = operation === INCREASE ? (total += price) : (total -= price);
-    // const y = x < 10 ? (total = 0) : total;
-
-    if (operation === INCREASE) {
-      total += price;
-    }
-
-    if (operation === DECREASE) {
-      total -= itemPriceConverted;
-    }
-
-    // Don't let the price go below 0
-    if (this.props.totalPrice < 0) {
-      total = 0;
-    }
-    // convert int to string because we need the .000
-
-    if (this.props.totalPrice === 0) {
-      priceString = `${total}`;
-    } else {
-      priceString = `${total}.000`;
-    }
-
-    this.props.dispatch(calculateTotal(priceString));
-  };
-
-  componentDidUpdate() {
-    // get the ID of the item
-    const { id, operation } = this.state;
+  componentWillUpdate(nextProps, nextState) {
+    const { id, operation } = nextState;
 
     // get the current item price
     const currentItemPrice = data[id].price;
@@ -156,13 +126,10 @@ class bakmi extends Component {
     // convert currentPrice to integer
     itemPriceConverted = parseFloat(currentItemPrice);
 
-    // call the function
-    this.calculateTotal(operation, itemPriceConverted);
+    this.props.dispatch(calculateTotalValue(operation, itemPriceConverted));
   }
 
   render() {
-    console.log('bakmi', total);
-
     return (
       <View>
         <FlatList
@@ -183,14 +150,7 @@ class bakmi extends Component {
 }
 
 bakmi.propTypes = {
-  dispatch: PropTypes.func,
-  totalPrice: PropTypes.number
+  dispatch: PropTypes.func
 };
 
-const mapStateToProps = state => {
-  return {
-    totalPrice: state.cartTotal.total
-  };
-};
-
-export default connect(mapStateToProps)(bakmi);
+export default connect()(bakmi);

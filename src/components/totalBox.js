@@ -12,7 +12,8 @@ class totalBox extends Component {
     return (
       <View style={styles.container}>
         <Text style={styles.text}>
-          TOTAL PESANAN: Rp. {this.props.totalPrice}
+          TOTAL PESANAN: Rp.{' '}
+          {this.props.totalPrice > 0 ? `${this.props.totalPrice}.000` : 0}
         </Text>
         <Icon
           name="ios-paper-outline"
@@ -49,8 +50,9 @@ const styles = {
 };
 
 const mapStateToProps = state => {
+  const { total } = state.cartTotal;
   return {
-    totalPrice: state.cartTotal.total
+    totalPrice: total.
   };
 };
 
