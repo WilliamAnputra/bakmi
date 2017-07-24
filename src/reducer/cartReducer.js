@@ -7,7 +7,7 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case CALCULATE_TOTAL:
-      return { ...state, total: action.payload };
+      return { ...state, total: action.payload + INITIAL_STATE.total };
     default:
       return state;
   }

@@ -68,22 +68,22 @@ class cemilan extends Component {
     // const y = x < 10 ? (total = 0) : total;
 
     if (operation === INCREASE) {
-      total += price;
+      this.props.totalPrice += price;
     }
 
     if (operation === DECREASE) {
-      total -= itemPriceConverted;
+      this.props.totalPrice -= itemPriceConverted;
     }
 
     // Don't let the price go below 0
-    if (total < 0) {
-      total = 0;
+    if (this.props.totalPrice < 0) {
+      this.props.totalPrice = 0;
     }
 
-    if (total === 0) {
-      priceString = `${total}`;
+    if (this.props.totalPrice === 0) {
+      priceString = `${this.props.totalPrice}`;
     } else {
-      priceString = `${total}.000`;
+      priceString = `${this.props.totalPrice}.000`;
     }
 
     // convert back  int to string because we need the .000
@@ -123,4 +123,15 @@ class cemilan extends Component {
   }
 }
 
-export default connect()(cemilan);
+cemilan.propTypes = {
+  dispatch: PropTypes.func,
+  totalPrice: PropTypes.number
+};
+
+const mapStateToProps = state => {
+  return {
+    totalPrice: state.cartTotal.total
+  };
+};
+
+export default connect(mapStateToProps)(cemilan);

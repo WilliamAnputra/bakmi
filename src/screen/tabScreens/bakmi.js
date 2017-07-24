@@ -124,23 +124,24 @@ class bakmi extends Component {
     // const y = x < 10 ? (total = 0) : total;
 
     if (operation === INCREASE) {
-      total += price;
+      console.log('price is', price);
+      this.props.totalPrice += price;
     }
 
     if (operation === DECREASE) {
-      total -= itemPriceConverted;
+      this.props.totalPrice -= itemPriceConverted;
     }
 
     // Don't let the price go below 0
-    if (total < 0) {
-      total = 0;
+    if (this.props.totalPrice < 0) {
+      this.props.totalPrice = 0;
     }
     // convert int to string because we need the .000
 
-    if (total === 0) {
-      priceString = `${total}`;
+    if (this.props.totalPrice === 0) {
+      priceString = `${this.props.totalPrice}`;
     } else {
-      priceString = `${total}.000`;
+      priceString = `${this.props.totalPrice}.000`;
     }
 
     this.props.dispatch(calculateTotal(priceString));
@@ -162,6 +163,8 @@ class bakmi extends Component {
 
   render() {
     console.log('bakmi', this.props.totalPrice);
+    console.log(this.props.totalPrice);
+
     return (
       <View>
         <FlatList
@@ -182,7 +185,14 @@ class bakmi extends Component {
 }
 
 bakmi.propTypes = {
-  dispatch: PropTypes.func
+  dispatch: PropTypes.func,
+  totalPrice: PropTypes.number
 };
 
-export default connect()(bakmi);
+const mapStateToProps = state => {
+  return {
+    totalPrice: state.cartTotal.total
+  };
+};
+
+export default connect(mapStateToProps)(bakmi);
