@@ -26,7 +26,7 @@ class totalBox extends Component {
 
 totalBox.propTypes = {
   onPress: PropTypes.object,
-  totalPrice: PropTypes.string
+  totalPrice: PropTypes.number
 };
 
 const styles = {
