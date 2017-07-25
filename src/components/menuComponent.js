@@ -30,8 +30,9 @@ export default class BakmiComponent extends Component {
 
             <OrderButton
               onPress={this.props.onPress}
-              findQuantity={this.props.calculateTotal}
+              findId={this.props.findId}
               findOperation={this.props.findOperation}
+              findQuantity={this.props.findQuantity}
             />
 
             <Text style={styles.priceTag}>
@@ -57,8 +58,9 @@ BakmiComponent.propTypes = {
   title: PropTypes.string,
   price: PropTypes.string,
   onPress: PropTypes.func,
-  calculateTotal: PropTypes.func,
-  findOperation: PropTypes.func
+  findId: PropTypes.func,
+  findOperation: PropTypes.func,
+  findQuantity: PropTypes.func
 };
 
 const styles = {

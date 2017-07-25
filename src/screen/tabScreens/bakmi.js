@@ -106,15 +106,20 @@ class bakmi extends Component {
 
   state = {
     id: 0,
-    operation: ''
+    operation: '',
+    quantity: 0
   };
 
-  findQuantity = id => {
-    return this.setState({ id });
+  findId = id => {
+    this.setState({ id });
+  };
+
+  findQuantity = quantity => {
+    this.setState({ quantity });
   };
 
   findOperation = operation => {
-    return this.setState({ operation });
+    this.setState({ operation });
   };
 
   componentWillUpdate(nextProps, nextState) {
@@ -122,6 +127,8 @@ class bakmi extends Component {
 
     // get the current item price
     const currentItemPrice = data[id].price;
+
+    console.log('current itemname', nextState.quantity);
 
     // convert currentPrice to integer
     itemPriceConverted = parseFloat(currentItemPrice);
@@ -140,8 +147,9 @@ class bakmi extends Component {
               imageURI={item.imageURI}
               title={item.title}
               price={item.price}
-              calculateTotal={() => this.findQuantity(item.id)}
+              findId={() => this.findId(item.id)}
               findOperation={this.findOperation}
+              findQuantity={this.findQuantity}
             />}
         />
       </View>

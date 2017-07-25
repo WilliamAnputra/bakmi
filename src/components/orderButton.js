@@ -4,25 +4,31 @@ import { Text, View, TouchableOpacity } from 'react-native';
 
 export default class ImportButton extends Component {
   static propTypes = {
-    findQuantity: PropTypes.func,
-    findOperation: PropTypes.func
+    findId: PropTypes.func,
+    findOperation: PropTypes.func,
+    findQuantity: PropTypes.func
   };
   state = {
     quantity: 0
   };
   renderTotal = operation => {
-    this.props.findQuantity();
+    this.props.findId();
     this.props.findOperation(operation);
+
     if (operation === 'decrease' && this.state.quantity > 0) {
-      return this.setState({ quantity: this.state.quantity - 1 });
+      this.setState({ quantity: this.state.quantity - 1 });
+      this.props.findQuantity((this.state.quantity -= 1));
     }
     if (this.state.quantity === 0 && operation === 'decrease') {
-      return this.setState({ quantity: 0 });
+      this.setState({ quantity: 0 });
+      this.props.findQuantity((this.state.quantity = 0));
     }
 
     if (operation === 'increase' && !this.state.quantity >= 0) {
-      return this.setState({ quantity: this.state.quantity + 1 });
+      this.setState({ quantity: this.state.quantity + 1 });
+      this.props.findQuantity((this.state.quantity += 1));
     }
+
     return null;
   };
 
