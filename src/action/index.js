@@ -1,9 +1,10 @@
-import { CALCULATE_TOTAL } from './types';
+import { CALCULATE_TOTAL, CHECKOUT } from './types';
 
 const INCREASE = 'increase';
 const DECREASE = 'decrease';
 
 let total = 0;
+const itemList = [];
 
 export const calculateTotalValue = (operation, price) => {
   if (operation === INCREASE) {
@@ -22,5 +23,19 @@ export const calculateTotalValue = (operation, price) => {
   return {
     type: CALCULATE_TOTAL,
     payload: total
+  };
+};
+
+export const showCheckoutDetail = (
+  itemId,
+  itemPrice,
+  itemName,
+  itemQuantity
+) => {
+  itemList.push({ itemId, itemPrice, itemName, itemQuantity });
+
+  return {
+    type: CHECKOUT,
+    payload: itemList
   };
 };

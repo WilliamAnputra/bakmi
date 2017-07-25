@@ -1,7 +1,9 @@
 import { Text, View } from 'react-native';
+import { connect } from 'react-redux';
+
 import React, { Component } from 'react';
 
-export default class checkOutScreen extends Component {
+class checkOutScreen extends Component {
   render() {
     return (
       <View>
@@ -10,3 +12,13 @@ export default class checkOutScreen extends Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  const itemList = state.checkoutItem.itemList;
+
+  return {
+    item: {}
+  };
+};
+
+export default connect(mapStateToProps)(checkOutScreen);

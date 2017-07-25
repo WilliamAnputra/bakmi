@@ -3,7 +3,7 @@ import { View, FlatList } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import MenuComponent from '../../components/menuComponent';
-import { calculateTotalValue } from '../../action';
+import { calculateTotalValue, showCheckoutDetail } from '../../action';
 
 const basoGoreng = require('../../images/cemilan/baso_goreng.png');
 const pangsit = require('../../images/cemilan/pangsit.png');
@@ -46,19 +46,24 @@ class cemilan extends Component {
 
   state = {
     id: 0,
-    operation: ''
+    operation: '',
+    quantity: 0
   };
 
-  findQuantity = id => {
-    return this.setState({ id });
+  findId = id => {
+    this.setState({ id });
+  };
+
+  findQuantity = quantity => {
+    this.setState({ quantity });
   };
 
   findOperation = operation => {
-    return this.setState({ operation });
+    this.setState({ operation });
   };
 
   componentWillUpdate(nextProps, nextState) {
-    const { id, operation } = nextState;
+    const { id, operation, quantity } = nextState;
 
     // get the current item price
     const currentItemPrice = data[id].price;
@@ -66,10 +71,17 @@ class cemilan extends Component {
     // convert currentPrice to integer
     itemPriceConverted = parseFloat(currentItemPrice);
 
-    this.props.dispatch(calculateTotalValue(operation, itemPriceConverted));
+    // the prop
+    const itemPrice = itemPriceConverted;
+    const itemName = data[id].title;
+    const itemQuantity = quantity;
+    const itemId = id;
 
-    // // call the function
-    // this.calculateTotal(operation, itemPriceConverted);
+    this.props.dispatch(
+      showCheckoutDetail(itemId, itemPrice, itemName, itemQuantity)
+    );
+
+    this.props.dispatch(calculateTotalValue(operation, itemPriceConverted));
   }
   render() {
     return (
@@ -82,8 +94,9 @@ class cemilan extends Component {
               imageURI={item.imageURI}
               title={item.title}
               price={item.price}
-              calculateTotal={() => this.findQuantity(item.id)}
+              findId={() => this.findId(item.id)}
               findOperation={this.findOperation}
+              findQuantity={this.findQuantity}
             />}
         />
       </View>

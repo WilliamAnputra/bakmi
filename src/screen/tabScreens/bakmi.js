@@ -3,7 +3,7 @@ import { View, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import MenuComponent from '../../components/menuComponent';
-import { calculateTotalValue } from '../../action';
+import { calculateTotalValue, showCheckoutDetail } from '../../action';
 
 const bakmiLebar = require('../../images/bakmi/bakmi_lebar.png');
 const bakmiHijau = require('../../images/bakmi/bakmi_hijau.png');
@@ -12,9 +12,6 @@ const kwetiau = require('../../images/bakmi/kwetiau.png');
 const locupan = require('../../images/bakmi/locupan.png');
 const nasiTim = require('../../images/bakmi//nasi_tim.png');
 const mieKangkung = require('../../images/bakmi//mie_kangkung.png');
-
-const INCREASE = 'increase';
-const DECREASE = 'decrease';
 
 const data = [
   {
@@ -123,15 +120,23 @@ class bakmi extends Component {
   };
 
   componentWillUpdate(nextProps, nextState) {
-    const { id, operation } = nextState;
+    const { id, operation, quantity } = nextState;
 
     // get the current item price
     const currentItemPrice = data[id].price;
 
-    console.log('current itemname', nextState.quantity);
-
     // convert currentPrice to integer
     itemPriceConverted = parseFloat(currentItemPrice);
+
+    // the prop
+    const itemPrice = itemPriceConverted;
+    const itemName = data[id].title;
+    const itemQuantity = quantity;
+    const itemId = id;
+
+    this.props.dispatch(
+      showCheckoutDetail(itemId, itemPrice, itemName, itemQuantity)
+    );
 
     this.props.dispatch(calculateTotalValue(operation, itemPriceConverted));
   }
