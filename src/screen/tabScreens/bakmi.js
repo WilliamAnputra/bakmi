@@ -95,6 +95,7 @@ const data = [
 ];
 
 let itemPriceConverted = 0;
+const itemList = [];
 
 class bakmi extends Component {
   static propTypes = {
@@ -118,6 +119,7 @@ class bakmi extends Component {
   findOperation = operation => {
     this.setState({ operation });
   };
+  componentWillMount() {}
 
   componentWillUpdate(nextProps, nextState) {
     const { id, operation, quantity } = nextState;
@@ -134,6 +136,16 @@ class bakmi extends Component {
     const itemQuantity = quantity;
     const itemId = id;
 
+    // always create a new array
+
+    if (itemQuantity > 0) {
+      itemList.push({ itemId, itemName, itemQuantity, itemPrice });
+      // console.log('itemprice', itemPrice);
+      // console.log('itemName', itemName);
+      // console.log('itemQuantity', itemQuantity);
+      // console.log('itemId', itemId);
+    }
+
     this.props.dispatch(
       showCheckoutDetail(itemId, itemPrice, itemName, itemQuantity)
     );
@@ -142,6 +154,42 @@ class bakmi extends Component {
   }
 
   render() {
+    const array = [
+      { id: 0, quantity: 1 },
+      { id: 1, quantity: 2 },
+      { id: 0, quantity: 4 },
+      { id: 2, quantity: 5 },
+      { id: 3, quantity: 6 },
+      { id: 1, quantity: 7 },
+      { id: 0, quantity: 2 }
+    ];
+
+    const arrayFiltered = [];
+    let count = 0;
+    array.forEach(obj => {
+      const item = arrayFiltered.find(thisItem => thisItem.id === obj.id);
+
+      debugger;
+
+      if (item) {
+        if (item.quantity < obj.quantity) {
+          debugger;
+          item.quantity = obj.quantity;
+        }
+        console.log('call here');
+        count += 1;
+        console.log('count', count);
+        return;
+      }
+      debugger;
+      arrayFiltered.push(obj);
+      console.log('arrayFiltered after', arrayFiltered);
+    });
+
+    // arrayFiltere =[{
+    //     { id: 0, quantity: 1 },
+    // { id: 1, quantity: 2 },
+    // }]
     return (
       <View>
         <FlatList
