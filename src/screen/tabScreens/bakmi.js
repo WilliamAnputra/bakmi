@@ -138,58 +138,13 @@ class bakmi extends Component {
 
     // always create a new array
 
-    if (itemQuantity > 0) {
-      itemList.push({ itemId, itemName, itemQuantity, itemPrice });
-      // console.log('itemprice', itemPrice);
-      // console.log('itemName', itemName);
-      // console.log('itemQuantity', itemQuantity);
-      // console.log('itemId', itemId);
-    }
+    itemList.push({ itemId, itemName, itemQuantity, itemPrice });
 
-    this.props.dispatch(
-      showCheckoutDetail(itemId, itemPrice, itemName, itemQuantity)
-    );
-
+    this.props.dispatch(showCheckoutDetail(itemList));
     this.props.dispatch(calculateTotalValue(operation, itemPriceConverted));
   }
 
   render() {
-    const array = [
-      { id: 0, quantity: 1 },
-      { id: 1, quantity: 2 },
-      { id: 0, quantity: 4 },
-      { id: 2, quantity: 5 },
-      { id: 3, quantity: 6 },
-      { id: 1, quantity: 7 },
-      { id: 0, quantity: 2 }
-    ];
-
-    const arrayFiltered = [];
-    let count = 0;
-    array.forEach(obj => {
-      const item = arrayFiltered.find(thisItem => thisItem.id === obj.id);
-
-      debugger;
-
-      if (item) {
-        if (item.quantity < obj.quantity) {
-          debugger;
-          item.quantity = obj.quantity;
-        }
-        console.log('call here');
-        count += 1;
-        console.log('count', count);
-        return;
-      }
-      debugger;
-      arrayFiltered.push(obj);
-      console.log('arrayFiltered after', arrayFiltered);
-    });
-
-    // arrayFiltere =[{
-    //     { id: 0, quantity: 1 },
-    // { id: 1, quantity: 2 },
-    // }]
     return (
       <View>
         <FlatList

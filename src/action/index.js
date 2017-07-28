@@ -4,7 +4,6 @@ const INCREASE = 'increase';
 const DECREASE = 'decrease';
 
 let total = 0;
-const itemList = [];
 
 export const calculateTotalValue = (operation, price) => {
   if (operation === INCREASE) {
@@ -26,16 +25,23 @@ export const calculateTotalValue = (operation, price) => {
   };
 };
 
-export const showCheckoutDetail = (
-  itemId,
-  itemPrice,
-  itemName,
-  itemQuantity
-) => {
-  itemList.push({ itemId, itemPrice, itemName, itemQuantity });
+export const showCheckoutDetail = itemList => {
+  const filteredArray = [];
 
+  itemList.forEach(obj => {
+    const item = filteredArray.find(
+      filteredItem => filteredItem.itemId === obj.itemId
+    );
+
+    if (item) {
+      item.itemQuantity = obj.itemQuantity;
+      return;
+    }
+
+    filteredArray.push(obj);
+  });
   return {
     type: CHECKOUT,
-    payload: itemList
+    payload: filteredArray
   };
 };
