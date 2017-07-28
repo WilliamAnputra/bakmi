@@ -1,4 +1,4 @@
-import { CHECKOUT } from '../action/types';
+import { BAKMI } from '../action/types';
 
 const INITIAL_STATE = {
   itemList: []
@@ -6,7 +6,7 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case CHECKOUT:
+    case BAKMI:
       return { ...state, itemList: action.payload };
 
     default:
