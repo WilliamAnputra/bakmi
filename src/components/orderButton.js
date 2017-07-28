@@ -43,7 +43,7 @@ export default class ImportButton extends Component {
             <Text style={styles.operatorSign}> - </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.totalContainer}>
+          <TouchableOpacity style={styles.totalContainer} disabled>
             <Text style={styles.totalText}>
               {this.state.quantity}
             </Text>

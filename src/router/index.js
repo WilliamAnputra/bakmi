@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import loginScreen from '../screen/loginScreen';
 import mainScreen from '../screen/mainScreen';
 import checkoutScreen from '../screen/checkoutScreen';
+
 import store from '../store';
 
 export default class entryPoint extends Component {
@@ -12,15 +13,15 @@ export default class entryPoint extends Component {
       {
         login: { screen: loginScreen },
         main: { screen: mainScreen },
-        checkout: { screen: checkoutScreen },
+        checkout: { screen: checkoutScreen }
       },
       {
-        headerMode: 'screen',
-      },
+        headerMode: 'screen'
+      }
     );
     return (
       <Provider store={store}>
-        <Entry />
+        <Entry onNavigationStateChange={null} />
       </Provider>
     );
   }

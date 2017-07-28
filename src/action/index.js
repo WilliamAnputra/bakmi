@@ -1,10 +1,9 @@
-import { CALCULATE_TOTAL, BAKMI, CEMILAN } from './types';
+import { CALCULATE_TOTAL, CHECKOUT } from './types';
 
 const INCREASE = 'increase';
 const DECREASE = 'decrease';
 
 let total = 0;
-const itemList = [];
 
 export const calculateTotalValue = (operation, price) => {
   if (operation === INCREASE) {
@@ -26,30 +25,23 @@ export const calculateTotalValue = (operation, price) => {
   };
 };
 
-export const calculateBakmiItem = (
-  itemId,
-  itemPrice,
-  itemName,
-  itemQuantity
-) => {
-  itemList.push({ itemId, itemPrice, itemName, itemQuantity });
+export const showCheckoutDetail = itemList => {
+  const filteredArray = [];
 
+  itemList.forEach(obj => {
+    const item = filteredArray.find(
+      filteredItem => filteredItem.itemId === obj.itemId
+    );
+
+    if (item) {
+      item.itemQuantity = obj.itemQuantity;
+      return;
+    }
+
+    filteredArray.push(obj);
+  });
   return {
-    type: BAKMI,
-    payload: itemList
-  };
-};
-
-export const calculateCemilanItem = (
-  itemId,
-  itemPrice,
-  itemName,
-  itemQuantity
-) => {
-  itemList.push({ itemId, itemPrice, itemName, itemQuantity });
-
-  return {
-    type: BAKMI,
-    payload: itemList
+    type: CHECKOUT,
+    payload: filteredArray
   };
 };

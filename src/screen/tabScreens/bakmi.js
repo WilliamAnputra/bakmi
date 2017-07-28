@@ -3,7 +3,7 @@ import { View, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import MenuComponent from '../../components/menuComponent';
-import { calculateTotalValue, cal } from '../../action';
+import { calculateTotalValue, showCheckoutDetail } from '../../action';
 
 const bakmiLebar = require('../../images/bakmi/bakmi_lebar.png');
 const bakmiHijau = require('../../images/bakmi/bakmi_hijau.png');
@@ -138,26 +138,13 @@ class bakmi extends Component {
 
     // always create a new array
 
-    if (itemQuantity > 0) {
-      itemList.push({ itemId, itemName, itemQuantity, itemPrice });
-      // console.log('itemprice', itemPrice);
-      // console.log('itemName', itemName);
-      // console.log('itemQuantity', itemQuantity);
-      // console.log('itemId', itemId);
-    }
+    itemList.push({ itemId, itemName, itemQuantity, itemPrice });
 
-    this.props.dispatch(
-      showCheckoutDetail(itemId, itemPrice, itemName, itemQuantity)
-    );
-
+    this.props.dispatch(showCheckoutDetail(itemList));
     this.props.dispatch(calculateTotalValue(operation, itemPriceConverted));
   }
 
   render() {
-    // arrayFiltere =[{
-    //     { id: 0, quantity: 1 },
-    // { id: 1, quantity: 2 },
-    // }]
     return (
       <View>
         <FlatList
