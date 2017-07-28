@@ -3,7 +3,7 @@ import { View, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import MenuComponent from '../../components/menuComponent';
-import { calculateTotalValue, showCheckoutDetail } from '../../action';
+import { calculateTotalValue, cal } from '../../action';
 
 const bakmiLebar = require('../../images/bakmi/bakmi_lebar.png');
 const bakmiHijau = require('../../images/bakmi/bakmi_hijau.png');
@@ -154,38 +154,6 @@ class bakmi extends Component {
   }
 
   render() {
-    const array = [
-      { id: 0, quantity: 1 },
-      { id: 1, quantity: 2 },
-      { id: 0, quantity: 4 },
-      { id: 2, quantity: 5 },
-      { id: 3, quantity: 6 },
-      { id: 1, quantity: 7 },
-      { id: 0, quantity: 2 }
-    ];
-
-    const arrayFiltered = [];
-    let count = 0;
-    array.forEach(obj => {
-      const item = arrayFiltered.find(thisItem => thisItem.id === obj.id);
-
-      debugger;
-
-      if (item) {
-        if (item.quantity < obj.quantity) {
-          debugger;
-          item.quantity = obj.quantity;
-        }
-        console.log('call here');
-        count += 1;
-        console.log('count', count);
-        return;
-      }
-      debugger;
-      arrayFiltered.push(obj);
-      console.log('arrayFiltered after', arrayFiltered);
-    });
-
     // arrayFiltere =[{
     //     { id: 0, quantity: 1 },
     // { id: 1, quantity: 2 },

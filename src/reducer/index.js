@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux';
 import cartReducer from './cartReducer';
-import checkoutReducer from './checkoutReducer';
+import bakmiReducer from './bakmiReducer';
+import cemilanReducer from './cemilanReducer';
 
 export default combineReducers({
   cartTotal: cartReducer,
-  checkoutItem: checkoutReducer
+  bakmiList: bakmiReducer,
+  cemilanList: cemilanReducer
 });

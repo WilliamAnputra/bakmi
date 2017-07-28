@@ -1,4 +1,4 @@
-import { CALCULATE_TOTAL, CHECKOUT } from './types';
+import { CALCULATE_TOTAL, BAKMI, CEMILAN } from './types';
 
 const INCREASE = 'increase';
 const DECREASE = 'decrease';
@@ -26,7 +26,7 @@ export const calculateTotalValue = (operation, price) => {
   };
 };
 
-export const showCheckoutDetail = (
+export const calculateBakmiItem = (
   itemId,
   itemPrice,
   itemName,
@@ -35,7 +35,21 @@ export const showCheckoutDetail = (
   itemList.push({ itemId, itemPrice, itemName, itemQuantity });
 
   return {
-    type: CHECKOUT,
+    type: BAKMI,
+    payload: itemList
+  };
+};
+
+export const calculateCemilanItem = (
+  itemId,
+  itemPrice,
+  itemName,
+  itemQuantity
+) => {
+  itemList.push({ itemId, itemPrice, itemName, itemQuantity });
+
+  return {
+    type: BAKMI,
     payload: itemList
   };
 };
