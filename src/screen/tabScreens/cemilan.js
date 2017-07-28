@@ -3,7 +3,7 @@ import { View, FlatList } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import MenuComponent from '../../components/menuComponent';
-import { calculateTotalValue, showCheckoutDetail } from '../../action';
+import { calculateTotalValue, calculateCemilanItem } from '../../action';
 
 const basoGoreng = require('../../images/cemilan/baso_goreng.png');
 const pangsit = require('../../images/cemilan/pangsit.png');
@@ -38,6 +38,7 @@ const data = [
 ];
 
 let itemPriceConverted = 0;
+const itemList = [];
 
 class cemilan extends Component {
   static propTypes = {
@@ -77,9 +78,9 @@ class cemilan extends Component {
     const itemQuantity = quantity;
     const itemId = id;
 
-    this.props.dispatch(
-      showCheckoutDetail(itemId, itemPrice, itemName, itemQuantity)
-    );
+    itemList.push({ itemPrice, itemName, itemQuantity, itemId });
+
+    this.props.dispatch(calculateCemilanItem(itemList));
 
     this.props.dispatch(calculateTotalValue(operation, itemPriceConverted));
   }

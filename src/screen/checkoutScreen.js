@@ -6,25 +6,48 @@ import { Text, View, Dimensions, ScrollView } from 'react-native';
 const { width, height } = Dimensions.get('window');
 
 class checkOutScreen extends Component {
-  showItemInfo = () => {
-    return this.props.itemList.map(item => {
+  showBakmiInfo = () => {
+    return this.props.bakmiList.map(item => {
       if (item.itemQuantity > 0) {
         return (
-          <ScrollView style={{ height: height / 1.5 }}>
-            <View style={styles.itemContainer} key={item.itemId}>
-              <Text style={styles.text}>
-                {item.itemName}
-              </Text>
+          <View style={styles.itemContainer} key={item.itemId}>
+            <Text style={[{ width: width / 2 }, styles.text]}>
+              {item.itemName}
+            </Text>
 
-              <Text style={[{ marginLeft: 10 }, styles.text]}>
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={[{ marginRight: 20 }, styles.text]}>
                 {item.itemQuantity}
               </Text>
 
-              <Text style={styles.text}>
+              <Text style={[{ width: 80 }, styles.text]}>
                 Rp. {item.itemPrice}.000
               </Text>
             </View>
-          </ScrollView>
+          </View>
+        );
+      }
+    });
+  };
+
+  showCemilanInfo = () => {
+    return this.props.cemilanList.map(item => {
+      if (item.itemQuantity > 0) {
+        return (
+          <View style={styles.itemContainer} key={item.itemId}>
+            <Text style={[{ width: width / 2 }, styles.text]}>
+              {item.itemName}
+            </Text>
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={[{ marginRight: 20 }, styles.text]}>
+                {item.itemQuantity}
+              </Text>
+
+              <Text style={[{ width: 80 }, styles.text]}>
+                Rp. {item.itemPrice}.000
+              </Text>
+            </View>
+          </View>
         );
       }
     });
@@ -35,37 +58,18 @@ class checkOutScreen extends Component {
       <View>
         <Text> NO : 0000 </Text>
         <View style={styles.separator} />
-        {this.showItemInfo()}
 
-        <View
-          style={{
-            flexDirection: 'row',
-            backgroundColor: '#bc2c39',
-            margin: 5,
-            borderRadius: 3
-          }}>
-          <Text
-            style={{
-              fontSize: 16,
-              marginLeft: 30,
-              marginTop: 10,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              color: '#ffffff'
-            }}>
-            TOTAL :
+        <ScrollView style={{ height: height / 1.5 }}>
+          {this.showBakmiInfo()}
+          {this.showCemilanInfo()}
+        </ScrollView>
+
+        <View style={styles.totalContainer}>
+          <Text style={styles.total}>TOTAL :</Text>
+
+          <Text style={styles.totalCount}>
+            Rp. {this.props.total}.000
           </Text>
-
-          <View style={{ flex: 1, marginLeft: 30 }}>
-            <Text
-              style={{
-                alignSelf: 'center',
-                fontWeight: 'bold',
-                color: '#ffffff'
-              }}>
-              | Rp. {this.props.total}.000
-            </Text>
-          </View>
         </View>
       </View>
     );
@@ -73,7 +77,8 @@ class checkOutScreen extends Component {
 }
 
 checkOutScreen.propTypes = {
-  itemList: PropTypes.array,
+  bakmiList: PropTypes.array,
+  cemilanList: PropTypes.array,
   total: PropTypes.number
 };
 
@@ -89,11 +94,35 @@ const styles = {
     marginLeft: 10,
     marginRight: 10
   },
+  totalContainer: {
+    flexDirection: 'row',
+    backgroundColor: '#bc2c39',
+    margin: 5,
+    borderRadius: 3
+  },
+  total: {
+    fontSize: 16,
+    marginLeft: 30,
+    marginTop: 10,
+    marginBottom: 10,
+    fontWeight: 'bold',
+    color: '#ffffff',
+    alignSelf: 'center'
+  },
+  totalCount: {
+    fontWeight: 'bold',
+    color: '#ffffff',
+    marginTop: 10,
+    marginLeft: 10,
+    fontSize: 16,
+    marginBottom: 10,
+    alignSelf: 'center'
+  },
   itemContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginRight: 10,
-    marginTop: 40,
+    marginTop: 10,
     marginLeft: 10
   },
   text: {
@@ -103,17 +132,20 @@ const styles = {
 
 const mapStateToProps = state => {
   // this is an array
-  let itemList = state.checkoutItem.itemList;
+  let bakmiList = state.bakmiList.itemList;
+  let cemilanList = state.cemilanList.itemList;
   const total = state.cartTotal.total;
 
-  itemList = itemList.filter(item => {
+  bakmiList = bakmiList.filter(item => {
+    return item.itemQuantity > 0;
+  });
+  cemilanList = cemilanList.filter(item => {
     return item.itemQuantity > 0;
   });
 
-  console.log('newArray', itemList);
-
   return {
-    itemList,
+    bakmiList,
+    cemilanList,
     total
   };
 };

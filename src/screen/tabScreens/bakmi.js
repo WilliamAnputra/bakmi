@@ -3,7 +3,7 @@ import { View, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import MenuComponent from '../../components/menuComponent';
-import { calculateTotalValue, showCheckoutDetail } from '../../action';
+import { calculateTotalValue, calculateBakmiItem } from '../../action';
 
 const bakmiLebar = require('../../images/bakmi/bakmi_lebar.png');
 const bakmiHijau = require('../../images/bakmi/bakmi_hijau.png');
@@ -140,7 +140,7 @@ class bakmi extends Component {
 
     itemList.push({ itemId, itemName, itemQuantity, itemPrice });
 
-    this.props.dispatch(showCheckoutDetail(itemList));
+    this.props.dispatch(calculateBakmiItem(itemList));
     this.props.dispatch(calculateTotalValue(operation, itemPriceConverted));
   }
 
