@@ -1,4 +1,4 @@
-import { CALCULATE_TOTAL, BAKMI, CEMILAN } from './types';
+import { CALCULATE_TOTAL, BAKMI, CEMILAN, QUANTITY } from './types';
 
 const INCREASE = 'increase';
 const DECREASE = 'decrease';
@@ -22,6 +22,13 @@ export const calculateTotalValue = (operation, price) => {
   return {
     type: CALCULATE_TOTAL,
     payload: total
+  };
+};
+
+export const calculateQuantity = quantity => {
+  return {
+    type: QUANTITY,
+    payload: quantity
   };
 };
 

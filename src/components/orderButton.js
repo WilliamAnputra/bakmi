@@ -1,32 +1,37 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Text, View, TouchableOpacity } from 'react-native';
+import { calculateQuantity } from '../action';
 
-export default class ImportButton extends Component {
+class OrderButton extends Component {
   static propTypes = {
     findId: PropTypes.func,
     findOperation: PropTypes.func,
-    findQuantity: PropTypes.func
+    findQuantity: PropTypes.func,
+    quantity: PropTypes.number
   };
-  state = {
-    quantity: 0
-  };
+  // state = {
+  //   quantity: 0
+  // };
   renderTotal = operation => {
     this.props.findId();
     this.props.findOperation(operation);
 
-    if (operation === 'decrease' && this.state.quantity > 0) {
-      this.setState({ quantity: this.state.quantity - 1 });
-      this.props.findQuantity((this.state.quantity -= 1));
+    if (operation === 'decrease' && this.props.quantity > 0) {
+      this.props.dispatch(calculateQuantity((this.props.quantity -= 1)));
+      // this.setState({ quantity: this.props.quantity - 1 });
+      this.props.findQuantity((this.props.quantity -= 1));
     }
-    if (this.state.quantity === 0 && operation === 'decrease') {
-      this.setState({ quantity: 0 });
-      this.props.findQuantity((this.state.quantity = 0));
+    if (this.props.quantity === 0 && operation === 'decrease') {
+      // this.setState({ quantity: 0 });
+      this.props.findQuantity((this.props.quantity = 0));
     }
 
-    if (operation === 'increase' && !this.state.quantity >= 0) {
-      this.setState({ quantity: this.state.quantity + 1 });
-      this.props.findQuantity((this.state.quantity += 1));
+    if (operation === 'increase' && !this.props.quantity >= 0) {
+      this.props.dispatch(calculateQuantity((this.props.quantity += 1)));
+      // this.setState({ quantity: this.props.quantity + 1 });
+      this.props.findQuantity((this.props.quantity += 1));
     }
 
     return null;
@@ -38,14 +43,14 @@ export default class ImportButton extends Component {
         <View style={{ flexDirection: 'row' }}>
           <TouchableOpacity
             style={styles.operatorSignContaier}
-            disabled={this.state.quantity === 0 ? true : false}
+            disabled={this.props.quantity === 0 ? true : false}
             onPress={() => this.renderTotal('decrease')}>
             <Text style={styles.operatorSign}> - </Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.totalContainer} disabled>
             <Text style={styles.totalText}>
-              {this.state.quantity}
+              {this.props.quantity}
             </Text>
           </TouchableOpacity>
 
@@ -60,11 +65,10 @@ export default class ImportButton extends Component {
   }
 }
 
-ImportButton.PropTypes = {
+OrderButton.PropTypes = {
   price: PropTypes.number,
   title: PropTypes.string,
-  index: PropTypes.number,
-  quantity: PropTypes.number
+  index: PropTypes.number
 };
 
 const styles = {
@@ -89,3 +93,12 @@ const styles = {
     color: '#ffffff'
   }
 };
+
+const mapStateToProps = state => {
+  console.log(state);
+  return {
+    quantity: state.quantity.quantity
+  };
+};
+
+export default connect(mapStateToProps)(OrderButton);

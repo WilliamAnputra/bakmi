@@ -1,16 +1,16 @@
 import { REHYRDRATE } from 'redux-persist/constants';
-import { CEMILAN } from '../action/types';
+import { QUANTITY } from '../action/types';
 
 const INITIAL_STATE = {
-  itemList: []
+  quantity: 0
 };
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case REHYRDRATE:
-      return { ...state, itemList: action.payload.bakmiList || [] };
-    case CEMILAN:
-      return { ...state, itemList: action.payload };
+      return { ...state, quantity: action.payload.quantity || 0 };
+    case QUANTITY:
+      return { ...state, quantity: action.payload };
 
     default:
       return state;
